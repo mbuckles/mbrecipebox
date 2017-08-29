@@ -1,0 +1,115 @@
+/*Footer*/
+footer {
+  margin-top: 5rem;
+}
+i.fa.fa-github {
+  margin-left: 15px;
+  margin-top:5px;
+  font-size: 3.5em;
+  vertical-align: middle;
+}
+a.glyphicon.glyphicon-envelope {
+  margin-left: 10px;
+  margin-top:5px;
+  font-size: 2.5em;
+  top: 0.5em;
+}
+/* End Footer*/
+body {
+  background-color: #40E0D0;
+}
+
+.box {
+  margin: 30px auto;
+  border: 1px solid #40E0D0;
+  box-shadow: 5px 5px 5px grey;
+  border-radius: 10px;
+  height: auto;
+  background-color: white;
+  width: 600px;
+}
+
+.headerbox {
+  color: black;
+  width: 97%;
+  font-size: 3em;
+  font-family: "Comic Sans MS", cursive, sans-serif;
+  margin: 30px auto;
+
+}
+
+.recipebox {
+  border: 2px solid #40E0D0;
+  width: 90%;
+  font-size: 2em;
+  border-radius: 5px;
+  margin: 10px auto;
+}
+
+.accordion {
+  margin: 20px auto;
+  width: 300px;
+}
+
+button {
+  margin: 15px 0px 10px 0px;
+  border-radius: 5px;
+  box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.2), 0 3px 5px 0 rgba(0, 0, 0, 0.19);
+  padding: 1em 1em;
+  cursor: pointer;
+  background-color: #fff;
+  border: 1px solid #999;
+  color: #000;
+}
+button:hover {
+  background-color: #ccc;
+}
+button.red {
+  background-color: #c00;
+  border: 1px solid #800;
+  color: #fff;
+  margin: 0px 0px 0px 3px;
+}
+button.red:hover {
+  background-color: #a00;
+}
+button.green {
+  background-color: #090;
+  border: 1px solid #060;
+  color: #fff;
+  margin: 0px 3px 0px 0px;
+}
+button.green:hover {
+  background-color: #080;
+}
+button.turq {
+  background-color: #AFEEEE;
+  border: 1px solid black;
+  color: black;
+  margin: 10px;
+}
+button.turq:hover {
+  background-color: #00CED1;
+}
+
+.panel-heading {
+  cursor: pointer;
+  cursor: hand;
+}
+
+input {
+  width: 100%;
+}
+
+.red {
+  color: red;
+}
+
+textarea {
+  width: 100%;
+  resize: vertical;
+}
+
+li {
+  text-align: left;
+}

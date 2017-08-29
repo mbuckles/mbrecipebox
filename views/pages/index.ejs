@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <% include ../partials/header.ejs %>
+</head>
+<body>
+  <!--credit is given to coding ideas from the Free Code Camp Forum started by user santakmishra. -->
+<div class="container" id="render-target"></div>
+ <footer>
+   <% include ../partials/footer.ejs %>
+   <script>
+   "use strict";
+
+   function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+   function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+   function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+   var MainBox = function (_React$Component) {
+     _inherits(MainBox, _React$Component);
+
+     function MainBox(props) {
+       _classCallCheck(this, MainBox);
+
+       //default recipes to shown in the beginning
+
+       var _this = _possibleConstructorReturn(this, _React$Component.call(this, props));
+
+       var recipes = [{ name: "Pancakes", ingredients: "Butter,Vanilla Extract,Flour, Sugar, Salt, Baking Powder, Eggs, Buttermilk" }, { name: "Grill Steak Kabobs", ingredients: "olive oil, tenderloin steak, diced bell pepper, salt, pepper" }];
+       //prepares local storage
+       if (typeof localStorage["mortybuckles_recipes"] != "undefined") recipes = JSON.parse(localStorage["mortybuckles_recipes"]);
+       //all .this and .state set to shorten code
+       _this.state = { recipes: recipes, showModal: false, nameValue: "", ingredientsValue: "", mode: "Add" };
+
+       _this.getRecipeList = _this.getRecipeList.bind(_this);
+       _this.open = _this.open.bind(_this);
+       _this.close = _this.close.bind(_this);
+       _this.submit = _this.submit.bind(_this);
+       _this.remove = _this.remove.bind(_this);
+       _this.edit = _this.edit.bind(_this);
+       return _this;
+     }
+
+     MainBox.prototype.getRecipeList = function getRecipeList(event) {
+       if (this.state.recipes.length > 0) {
+         var Panel = ReactBootstrap.Panel;
+         var count = 0;
+         var thelist = this.state.recipes.map(function (recipe) {
+           count++;
+           return React.createElement(
+             Panel,
+             { header: recipe.name, eventKey: parseInt(count) },
+             React.createElement(Ingredients, { ingredients: recipe.ingredients }),
+             React.createElement(
+               Button,
+               { className: "green", id: recipe.name, onClick: this.edit },
+               "Edit"
+             ),
+             React.createElement(
+               Button,
+               { className: "red", id: recipe.name, onClick: this.remove },
+               "Delete"
+             )
+           );
+         }.bind(this));
+         return thelist;
+       } else {
+         return "";
+       }
+     };
+
+     MainBox.prototype.edit = function edit(event) {
+       var name = event.target.id;
+       var recipes = this.state.recipes;
+       var ingredients;
+       for (var i = 0; i < recipes.length; i++) {
+         if (recipes[i].name == name) ingredients = recipes[i].ingredients;
+       }this.setState({ nameValue: name, ingredientsValue: ingredients, mode: "Edit" });
+       this.open();
+     };
+
+     MainBox.prototype.remove = function remove(event) {
+       var name = event.target.id;
+       var recipes = this.state.recipes;
+       var index;
+       for (var i = 0; i < recipes.length; i++) {
+         if (recipes[i].name == name) index = i;
+       }recipes.splice(index, 1);
+       this.setState({ recipes: recipes });
+       localStorage.setItem("mortybuckles_recipes", JSON.stringify(recipes));
+     };
+
+     MainBox.prototype.close = function close() {
+       this.setState({ showModal: false, nameValue: "", ingredientsValue: "", mode: "Add" });
+     };
+
+     MainBox.prototype.open = function open() {
+       this.setState({ showModal: true });
+     };
+
+     MainBox.prototype.submit = function submit() {
+       var name = document.getElementById("name").value;
+       var ingredients = document.getElementById("ingredients").value;
+
+       if (name === "" || ingredients === "") return;
+
+       var recipes = this.state.recipes;
+
+       if (this.state.mode == "Edit") {
+         for (var i = 0; i < recipes.length; i++) {
+           if (recipes[i].name == this.state.nameValue) {
+             recipes[i].name = name;
+             recipes[i].ingredients = ingredients;
+           }
+         }
+       } else {
+         recipes.push({ name: name, ingredients: ingredients });
+       }
+       this.setState({ recipes: recipes });
+       localStorage.setItem("mortybuckles_recipes", JSON.stringify(recipes));
+
+       this.close();
+     };
+
+     MainBox.prototype.render = function render() {
+       var recipeList = this.getRecipeList();
+       var Accordion = ReactBootstrap.Accordion;
+       var Modal = ReactBootstrap.Modal;
+       var Input = ReactBootstrap.Input;
+       return React.createElement(
+         "div",
+         { "class": "center-block" },
+         React.createElement(
+           "div",
+           { className: "headerbox text-center" },
+           "React Recipe Box"
+         ),
+         React.createElement(
+           "div",
+           { className: "box text-center" },
+           React.createElement(
+             Accordion,
+             { bsClass: "accordion center-block" },
+             recipeList
+           ),
+           React.createElement(
+             Modal,
+             { show: this.state.showModal, onHide: this.close },
+             React.createElement(
+               Modal.Header,
+               { closeButton: true },
+               React.createElement(
+                 Modal.Title,
+                 { bsClass: "green" },
+                 "Recipe Details"
+               )
+             ),
+             React.createElement(
+               Modal.Body,
+               null,
+               React.createElement(
+                 "form",
+                 null,
+                 React.createElement("input", { type: "text", defaultValue: this.state.nameValue, placeholder: "Recipe Name", id: "name" }),
+                 React.createElement("textarea", { defaultValue: this.state.ingredientsValue, placeholder: "Ingredients,Separated,By,Commas", id: "ingredients" })
+               )
+             ),
+             React.createElement(
+               Modal.Footer,
+               null,
+               React.createElement(
+                 Button,
+                 { bsClass: "green", onClick: this.submit },
+                 this.state.mode
+               ),
+               React.createElement(
+                 Button,
+                 { bsClass: "red", onClick: this.close },
+                 "Close"
+               )
+             )
+           ),
+           React.createElement(
+             Button,
+             { bsClass: "turq", bsSize: "large", onClick: this.open },
+             "Add Recipe"
+           )
+         )
+       );
+     };
+
+     return MainBox;
+   }(React.Component);
+
+   var Button = ReactBootstrap.Button;
+
+   var Ingredients = function (_React$Component2) {
+     _inherits(Ingredients, _React$Component2);
+
+     function Ingredients(props) {
+       _classCallCheck(this, Ingredients);
+
+       var _this2 = _possibleConstructorReturn(this, _React$Component2.call(this, props));
+
+       _this2.getIngredientsList = _this2.getIngredientsList.bind(_this2);
+       return _this2;
+     }
+
+     Ingredients.prototype.getIngredientsList = function getIngredientsList() {
+       if (this.props.ingredients !== "") {
+         var array = this.props.ingredients.split(",");
+         var count = 0;
+         var thelist = array.map(function (ingredient) {
+           count++;
+           return React.createElement(
+             "li",
+             null,
+             ingredient
+           );
+         });
+         return thelist;
+       } else {
+         return "";
+       }
+     };
+
+     Ingredients.prototype.render = function render() {
+       var ingredientsList = this.getIngredientsList();
+       return React.createElement(
+         "ul",
+         null,
+         ingredientsList
+       );
+     };
+
+     return Ingredients;
+   }(React.Component);
+
+   ReactDOM.render(React.createElement(MainBox, null), document.getElementById('render-target'));
+   </script>
+ </footer>
+</html>
+</body>
